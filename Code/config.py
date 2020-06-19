@@ -86,9 +86,13 @@ _C = config     # short alias to avoid coding
 _C.NAME = 'default'
 
 # options: 'pascal3d+', 'mnist', 'cifar10', 'coco'
-_C.DATA.DATASET = 'pascal3d+'
+# _C.DATA.DATASET = 'pascal3d+'
+_C.DATA.DATASET = 'kins'
+
 # categories for testing (vehicles only)
-_C.DATA.CATEGORY = ['aeroplane', 'bicycle', 'bus', 'car', 'motorbike', 'train']
+# _C.DATA.CATEGORY = ['aeroplane', 'bicycle', 'bus', 'car', 'motorbike', 'train']
+_C.DATA.CATEGORY = ['car']
+
 # categories for training
 _C.DATA.CATEGORY_TRAIN = ['aeroplane', 'bicycle', 'boat', 'bottle', 'bus', 'car',
                           'chair', 'diningtable', 'motorbike', 'sofa', 'train', 'tvmonitor']

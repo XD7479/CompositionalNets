@@ -126,7 +126,7 @@ def plot_ROC(occ_det_all,occ_types,title,filename):
 
 if __name__=='__main__':
 
-	dataset = 'coco' # pascal3d+, coco
+	# dataset = 'kins' # pascal3d+, coco, kins
 	nsamples_ratio = 1.0 # *100 percent of images used for evaluation
 	likely = 0.6
 	occ_levels = ['FIVE']#
@@ -143,7 +143,7 @@ if __name__=='__main__':
 	if dataset == 'pascal3d+':
 		occ_types = ['_white', '_noise', '_texture', '']#
 		colorbar_max= [10.0,10.0,7.0,7.0]
-	elif dataset == 'coco':
+	elif dataset == 'coco' or dataset == 'kins':
 		occ_types = ['']
 		colorbar_max = [7.0]
 
@@ -175,6 +175,7 @@ if __name__=='__main__':
 		mix_model_path = init_path + 'mix_model_vmf_pascal3d+_EM_all/'
 		bool_mixture_model_bg_local = bool_mixture_model_bg
 
+		# why pool4 is listed as an operation?
 		if backbone_type=='vgg':
 			if layer == 'pool4':
 				extractor = models.vgg16(pretrained=True).features[0:24]
@@ -204,7 +205,7 @@ if __name__=='__main__':
 			model.eval()
 
 		OCCLUSION_RESULT_CAT = []
-		for target_category in ['motorbike']:#categories:
+		for target_category in ['car']:#categories:
 			plot_out_dir = plot_out_dir_level + target_category + '/'
 			if not os.path.exists(plot_out_dir):
 				os.makedirs(plot_out_dir)
@@ -224,7 +225,7 @@ if __name__=='__main__':
 					eval_results = []
 
 					for id, data in enumerate(test_loader):
-						if id ==25:
+						if True:
 							input, occ_gt, label = data
 							if device_ids:
 								input = input.cuda(device_ids[0])
@@ -235,7 +236,7 @@ if __name__=='__main__':
 							scores,*_ = model(input)
 							pred_lab = np.argmax(scores.detach().cpu().numpy())
 
-							if pred_lab ==label:
+							if pred_lab == label:
 								print(img_name)
 								score, occ_maps, part_scores = model.get_occlusion(input,label)
 								grid = np.random.random((10,10))
@@ -288,8 +289,9 @@ if __name__=='__main__':
 
 		if bool_plot_roc:
 			ctmp=[]
-			nsamps = np.zeros(len(categories))
-			for cid in range(len(categories)):
+			# TODO: target_category? or categories?
+			nsamps = np.zeros(len(target_category))
+			for cid in range(len(target_category)):
 				otmp=[]
 				mtmp=[]
 				for oid in range(len(occ_types)):

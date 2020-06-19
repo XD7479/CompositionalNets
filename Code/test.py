@@ -14,7 +14,8 @@ import torchvision.models as models
 # Test parameters #
 ###################
 likely = 0.6  # occlusion likelihood
-occ_levels = ['ZERO', 'ONE', 'FIVE', 'NINE'] # occlusion levels to be evaluated [0%,20-40%,40-60%,60-80%]
+# occ_levels = ['ZERO', 'ONE', 'FIVE', 'NINE'] # occlusion levels to be evaluated [0%,20-40%,40-60%,60-80%]
+occ_levels = ['FIVE']
 bool_load_pretrained_model = True
 bool_mixture_model_bg = False 	# use maximal mixture model or sum of all mixture models, not so important
 bool_multi_stage_model = False 	# this is an old setup
@@ -58,7 +59,8 @@ if __name__ == '__main__':
 	if bool_load_pretrained_model:
 		if backbone_type=='vgg':
 			if layer=='pool5':
-				if dataset=='pascal3d+':
+				# TODO
+				if dataset=='pascal3d+' or dataset == 'kins':
 					vc_dir = model_save_dir+'vgg_pool5_p3d+/'
 				elif dataset=='coco':
 					vc_dir = model_save_dir+'vgg_pool5_coco/'
@@ -123,7 +125,7 @@ if __name__ == '__main__':
 		else:
 			if dataset=='pascal3d+':
 				occ_types = ['']#['_white','_noise', '_texture', '']
-			elif dataset=='coco':
+			elif dataset=='coco' or dataset == 'kins':
 				occ_types = ['']
 
 		for index, occ_type in enumerate(occ_types):

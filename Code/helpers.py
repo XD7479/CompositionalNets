@@ -208,6 +208,11 @@ def getImg(mode,categories, dataset, data_path, cat_test=None, occ_level='ZERO',
 				else:
 					img_dir = data_path+'coco_occ/{}_occ'.format(category)
 					filelist = data_path+'coco_occ/{}_{}.txt'.format(category, occ_level)
+			elif dataset == 'kins':
+				img_dir = data_path + 'kins_cuts/' + category
+				filelist = data_path + 'kins_cuts/'  + category + '_occ.txt'
+				occ_mask_dir = data_path + 'kins_cuts/' + category + '_mask'
+				occ_mask_dir_obj = data_path + 'kins_cuts/' + category + '_occludee_mask'
 
 			if os.path.exists(filelist):
 				with open(filelist, 'r') as fh:
@@ -216,7 +221,12 @@ def getImg(mode,categories, dataset, data_path, cat_test=None, occ_level='ZERO',
 				img_list = [cc.strip() for cc in contents]
 				label = categories.index(category)
 				for img_path in img_list:
-					if dataset != 'coco':
+					if dataset == 'kins':
+						img = img_dir + '/' + img_path + '.png'
+						occ_img1 = occ_mask_dir + '/' + img_path + '.png'
+						occ_img2 = occ_mask_dir_obj + '/' + img_path + '.png'
+
+					elif dataset != 'coco':
 						if occ_level=='ZERO':
 							img = img_dir + occ_type + '/' + img_path[:-2] + '.JPEG'
 							occ_img1 = []
